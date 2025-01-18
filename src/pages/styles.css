@@ -22,7 +22,7 @@ button {
 .container-buttons{
   display: flex;
   flex-direction: column;
-  gap: 2em;
+  gap: 0.7em;
 }
 
 .tres{
@@ -30,6 +30,7 @@ button {
   background-color: #84B026;
   border: none;
   border-radius: 8px;
+  font-size: 1em;
   font-weight: bold;
 }
 
@@ -38,6 +39,7 @@ button {
   background-color: #07C7F2;
   border: none;
   border-radius: 8px;
+  font-size: 1em;
   font-weight: bold;
   color: #FFF;
 }
@@ -47,6 +49,7 @@ button {
   background-color: #3D3D3D;
   border: none;
   border-radius: 8px;
+  font-size: 1em;
   font-weight: bold;
   color: #FFF;
 }

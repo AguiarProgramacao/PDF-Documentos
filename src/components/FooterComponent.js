@@ -1,10 +1,9 @@
 import React from "react";
-import "./styles.css"
 
 export default function FooterComponent() {
   return(
-    <div className="footer-container">
-      <p className="footer-text">Aguiar Programação</p>
+    <div style={{ width: "100%" }}>
+      <p style={{ textAlign: "center", color: "#FFF", position: "absolute", bottom: "-10px", left: 125, fontWeight: "bold" }}>Aguiar Programação</p>
     </div>
   )
 }
