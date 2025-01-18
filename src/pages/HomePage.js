@@ -11,7 +11,7 @@ export default function HomePage() {
       display: "flex",
       flexDirection: "column",
       justifyContent: "center",
-      height: "92vh",
+      height: "94vh",
       backgroundColor: "#161F30",
       padding: "1.5em",
     },

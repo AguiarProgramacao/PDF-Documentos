@@ -121,7 +121,7 @@ const styles = {
   container: {
     display: "flex",
     flexDirection: "column",
-    height: "93vh",
+    height: "100vh",
     backgroundColor: "#161F30",
     paddingInline: "1.1em"
   },
