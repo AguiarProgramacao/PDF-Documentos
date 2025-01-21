@@ -136,7 +136,7 @@ const styles = {
     border: "none",
     borderBottom: "1px solid #FFF",
     backgroundColor: "transparent",
-    marginBottom: "1em",
+    marginBottom: "1.8em",
     fontSize: "17px",
     color: "#FFF"
   },
