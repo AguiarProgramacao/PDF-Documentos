@@ -1,5 +1,4 @@
 import React, { useState, useRef } from "react";
-import "./styles.css";
 import Header from "../components/HeaderComponent";
 import { jsPDF } from "jspdf";
 import PFImage from "../assets/tres-irmaos.png";

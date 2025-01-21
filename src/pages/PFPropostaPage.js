@@ -1,5 +1,4 @@
 import React, { useState, useRef } from "react";
-import "./styles.css";
 import Header from "../components/HeaderComponent";
 import { FaFile, FaSignature } from "react-icons/fa";
 import { jsPDF } from "jspdf";

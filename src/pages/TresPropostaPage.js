@@ -1,5 +1,4 @@
 import React, { useState, useRef } from "react";
-import "./styles.css";
 import Header from "../components/HeaderComponent";
 import { FaFile, FaSignature } from "react-icons/fa";
 import { jsPDF } from "jspdf";
@@ -261,7 +260,7 @@ const styles = {
   container: {
     display: "flex",
     flexDirection: "column",
-    height: "100vh",
+    minHeight: "100vh",
     backgroundColor: "#161F30",
     paddingInline: "1.1em",
   },
