@@ -1,5 +1,4 @@
 import React, { useState, useRef } from "react";
-import "./styles.css";
 import Header from "../components/HeaderComponent";
 import { jsPDF } from "jspdf";
 import PFImage from "../assets/PF_Dedetizadora.png";
@@ -26,32 +25,62 @@ export default function TresGarantia() {
   const generatePDF = async () => {
     const signature = signatureData;
     const PFImageBase64 = await loadImageAsBase64(PFImage);
+    const dataEmissao = new Date().toLocaleDateString();
 
     const doc = new jsPDF({ unit: "px", format: [842, 595], orientation: "landscape" });
 
     doc.addImage(PFImageBase64, "PNG", 0, 0, 842, 595);
 
-    doc.setFontSize(18);
-    doc.setFont("helvetica", "bold");
-    doc.text("P&F Garantia", 421, 40, null, null, "center");
-
-    doc.setFontSize(12);
+    doc.setFontSize(15);
     doc.setFont("helvetica", "normal");
     const inputs = document.querySelectorAll(".input");
 
     const estabelecimento = inputs[0].value;
-    doc.text(`Nome do Estabelecimento: ${estabelecimento}`, 40, 100);
-    doc.text(`CPF/CNPJ: ${inputs[1].value}`, 40, 120);
-    doc.text(`Endereço: ${inputs[2].value}`, 40, 140);
-    doc.text(`Serviço: ${inputs[3].value}`, 40, 160);
-    doc.text(`Descrição do Serviço: ${inputs[4].value}`, 40, 180);
-    doc.text(`Tempo de Garantia: ${inputs[5].value}`, 40, 200);
-    doc.text(`Valor: ${inputs[6].value}`, 40, 220);
-    doc.text(`Nome do Representante: ${inputs[7].value}`, 40, 240);
+    doc.text(`ertificamos que o serviço de ${inputs[3].value}, realizado na data ${dataEmissao}, está garantido pelo período de ${inputs[5].value},`, 143, 247);
+    doc.text(` a contar da data da prestação de serviço. Realizado no local ${estabelecimento}, no endereço ${inputs[2].value}, com o CPF/CNPJ ${inputs[1].value}.`, 65, 267, { maxWidth: 730 });
+
+    doc.setFont("helvetica", "bold");
+    doc.setFontSize(18);
+    doc.text("Valor:", 100, 370);
+    doc.setFont("helvetica", "normal");
+    const valor = parseFloat(inputs[6].value);
+    if (!isNaN(valor)) {
+      const valorFormatado = new Intl.NumberFormat("pt-BR", {
+        style: "currency",
+        currency: "BRL",
+      }).format(valor);
+      doc.text(valorFormatado, 190, 370);
+    } else {
+      doc.text("Valor inválido", 210, 370);
+    }
+
+    doc.setFont("helvetica", "bold");
+    doc.setFontSize(18);
+    doc.text("Data:", 600, 370);
+    doc.setFont("helvetica", "normal");
+    doc.text(`${dataEmissao}`, 700, 370);
+
+    doc.setFont("helvetica", "bold");
+    doc.setFontSize(18);
+    doc.text("Descrição:", 100, 420);
+    doc.setFont("helvetica", "normal");
+    doc.text(`${inputs[4].value}`, 190, 420);
+
+    doc.setFont("helvetica", "bold");
+    doc.setFontSize(18);
+    doc.text("Garantia:", 600, 420);
+    doc.setFont("helvetica", "normal");
+    doc.text(`${inputs[5].value}`, 700, 420);
+
+    doc.setFont("helvetica", "bold");
+    doc.text(`Representante do ${estabelecimento}`, 100, 500);
+    doc.setFont("helvetica", "normal");
+    doc.text(`${inputs[7].value}`, 120, 520)
+
 
     if (signature) {
-      doc.text("Assinatura:", 40, 300);
-      doc.addImage(signature, "PNG", 40, 320, 200, 100);
+      doc.text("P&F Dedetizadora", 600, 500);
+      doc.addImage(signature, "PNG", 580, 485, 200, 100);
     }
 
     // Salvar o PDF usando o nome do estabelecimento
@@ -74,14 +103,14 @@ export default function TresGarantia() {
     <div style={styles.container}>
       <Header title="P&F Garantia" />
       <div style={styles.containerInput}>
-        <input style={styles.input} type="text" placeholder="Nome do Estabelecimento" />
-        <input style={styles.input} type="text" placeholder="CPF/CNPJ" />
-        <input style={styles.input} type="text" placeholder="Endereço" />
-        <input style={styles.input} type="text" placeholder="Serviço" />
-        <input style={styles.input} type="text" placeholder="Descrição do Serviço" />
-        <input style={styles.input} type="text" placeholder="Tempo de Garantia" />
-        <input style={styles.input} type="text" placeholder="Valor" />
-        <input style={styles.input} type="text" placeholder="Nome do Representante" />
+        <input className="input" style={styles.input} type="text" placeholder="Nome do Estabelecimento" />
+        <input className="input" style={styles.input} type="text" placeholder="CPF/CNPJ" />
+        <input className="input" style={styles.input} type="text" placeholder="Endereço" />
+        <input className="input" style={styles.input} type="text" placeholder="Serviço" />
+        <input className="input" style={styles.input} type="text" placeholder="Descrição do Serviço" />
+        <input className="input" style={styles.input} type="text" placeholder="Tempo de Garantia" />
+        <input className="input" style={styles.input} type="text" placeholder="Valor" />
+        <input className="input" style={styles.input} type="text" placeholder="Nome do Representante" />
       </div>
 
       <button style={styles.signatureButton} onClick={() => setIsModalOpen(true)}>

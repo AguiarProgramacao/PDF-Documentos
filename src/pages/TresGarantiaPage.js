@@ -26,38 +26,46 @@ export default function TresGarantia() {
   const generatePDF = async () => {
     const signature = signatureData;
     const PFImageBase64 = await loadImageAsBase64(PFImage);
-
+  
     const doc = new jsPDF({ unit: "px", format: [842, 595], orientation: "landscape" });
-
+    const dataEmissao = new Date().toLocaleDateString();
+  
     doc.addImage(PFImageBase64, "PNG", 0, 0, 842, 595);
-
-    doc.setFontSize(18);
+  
+    doc.setFontSize(30);
     doc.setFont("helvetica", "bold");
-    doc.text("P&F Garantia", 421, 40, null, null, "center");
-
-    doc.setFontSize(12);
-    doc.setFont("helvetica", "normal");
+  
     const inputs = document.querySelectorAll(".input");
-
     const estabelecimento = inputs[0].value;
-    doc.text(`Nome do Estabelecimento: ${estabelecimento}`, 40, 100);
-    doc.text(`CPF/CNPJ: ${inputs[1].value}`, 40, 120);
-    doc.text(`Endereço: ${inputs[2].value}`, 40, 140);
-    doc.text(`Serviço: ${inputs[3].value}`, 40, 160);
-    doc.text(`Descrição do Serviço: ${inputs[4].value}`, 40, 180);
-    doc.text(`Tempo de Garantia: ${inputs[5].value}`, 40, 200);
-    doc.text(`Valor: ${inputs[6].value}`, 40, 220);
-    doc.text(`Nome do Representante: ${inputs[7].value}`, 40, 240);
-
+    const endereco = inputs[2].value;
+    const cpfCnpj = inputs[1].value;
+    const servico = inputs[3].value;
+    const valor = parseFloat(inputs[6].value);
+  
+    // Formatação do valor em BRL
+    const valorFormatado = new Intl.NumberFormat("pt-BR", {
+      style: "currency",
+      currency: "BRL",
+    }).format(valor);
+  
+    // Texto principal com alinhamento centralizado
+    const texto = `Certificamos que o(a) ${estabelecimento}, localizado à ${endereco}, sob o CPF/CNPJ ${cpfCnpj}, efetuou o serviços de orçamento para serviço(s) de ${servico}. O valor foi de ${valorFormatado} reais. Utilizamos produtos registrados e aprovados pela ANVISA, em espaços comuns e contratados junto à Três Irmãos Sanitização, sob o CNPJ 37.580.098/0001-09, no dia ${dataEmissao}.`;
+  
+    doc.text(texto, 421, 170, { maxWidth: 650, align: "center" });
+  
+    // Assinatura
+    doc.setFont("helvetica", "normal");
     if (signature) {
-      doc.text("Assinatura:", 40, 300);
-      doc.addImage(signature, "PNG", 40, 320, 200, 100);
+      doc.addImage(signature, "PNG", 320, 430, 200, 100);
+      doc.text("________________", 421, 480, { align: "center" });
     }
-
-    // Salvar o PDF usando o nome do estabelecimento
+  
+    doc.setFontSize(22);
+    doc.text("Assinatura do responsável", 421, 500, { align: "center" });
+  
     const fileName = estabelecimento ? `${estabelecimento}_Garantia.pdf` : "Garantia.pdf";
     doc.save(fileName);
-  };
+  };  
 
   const clearSignature = () => {
     signatureCanvasRef.current.clear();

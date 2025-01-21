@@ -42,53 +42,108 @@ export default function PFProposta() {
   const generatePDF = async () => {
     const PFImageBase64 = await loadImageAsBase64(PFImage);
 
-    // Criar instância do jsPDF no formato portrait (A4)
     const doc = new jsPDF("p", "mm", "a4");
 
-    // Definir a imagem de fundo
     doc.addImage(PFImageBase64, "PNG", 0, 0, 210, 297);
 
-    // Adicionar título
-    doc.setFontSize(18);
-    doc.setFont("helvetica", "bold");
-    doc.text("P&F Proposta", 105, 40, null, null, "center");
+    const valorReal = parseInt(formData.valor);
+    const valorBRL = new Intl.NumberFormat("pt-BR", {
+      style: "currency",
+      currency: "BRL",
+    }).format(valorReal);
 
-    // Adicionar dados do formulário
-    doc.setFontSize(12);
+    // Dividir os itens de descrição do serviço por vírgula e remover espaços extras
+    const descricaoServicos = formData.descricaoServico
+      .split(",")
+      .map((item) => item.trim());
+
+    // Adicionar cabeçalho e informações principais
+    doc.setFontSize(14);
     doc.setFont("helvetica", "normal");
-    doc.text(`Nome do Estabelecimento: ${formData.estabelecimento}`, 20, 80);
-    doc.text(`CPF/CNPJ: ${formData.cpfCnpj}`, 20, 100);
-    doc.text(`Endereço: ${formData.endereco}`, 20, 120);
-    doc.text(`Serviço: ${formData.servico}`, 20, 140);
-    doc.text(`Descrição do Serviço: ${formData.descricaoServico}`, 20, 160);
-    doc.text(`Valor: ${formData.valor}`, 20, 180);
-    doc.text(`Quantidade de Parcelas: ${formData.parcelas}`, 20, 200);
-    doc.text(`Valor no Cartão: ${formData.valorCartao}`, 20, 220);
+    doc.text("Prezado Cliente,", 15, 65);
+    const textPrincipal = `Apresentamos nosso orçamento referente ao serviço de ${formData.servico} no local ${formData.estabelecimento}, sob o CPF/CNPJ ${formData.cpfCnpj}, localizado no endereço ${formData.endereco}. O valor total é de R$ ${valorBRL}.`;
+    const textLines = doc.splitTextToSize(textPrincipal, doc.internal.pageSize.getWidth() - 25);
+    let startX = 25;
+    let startY = 72;
+    const lineSpacing = 7;
 
-    // Adicionar a assinatura (caso tenha)
+    // Desenhar cada linha
+    textLines.forEach((line, index) => {
+      if (index === 0) {
+        doc.text(line, startX, startY);
+      } else {
+        doc.text(line, 15, startY);
+      }
+      startY += lineSpacing;
+    });
+
+    doc.setFont("helvetica", "bold");
+    doc.setFontSize(24);
+    doc.text("Descrição do Serviço:", 62, 110);
+    doc.setFont("helvetica", "normal");
+    doc.setFontSize(14);
+    let yOffset = 120;
+    descricaoServicos.forEach((item) => {
+      if (item) {
+        doc.text(`- ${item}`, 25, yOffset);
+        yOffset += 7;
+      }
+    });
+
+    doc.setFont("helvetica", "bold");
+    doc.setFontSize(24);
+    doc.text("Apresentação Técnica", 62, 180);
+    doc.setFont("helvetica", "normal");
+    doc.setFontSize(14);
+    doc.text("TÉCNICOS QUALIFICADOS PARA REALIZAR OS SERVIÇOS COM MAESTRIA. COM PRODUTOS DE QUALIDADE COMPROVADA. NOSSOS TÉCNICOS SÃO ESPECIALIZADOS E TÊM TODA A APARATOS PARA REALIZAR COM TOTAL CONFIANÇA E GARANTIA OS SERVIÇOS CONTRATADOS.", 15, 187, { maxWidth: 180 });
+
+    doc.setFont("helvetica", "bold");
+    doc.text("Condições Comerciais:", 15, 220);
+
+    doc.setFont("helvetica", "normal");
+    doc.text(`Valor:________________________________________________ ${valorBRL} reais`, 15, 227);
+
+    const valorCartao = parseFloat(formData.valorCartao);
+    const valorParcelas = valorCartao / parseInt(formData.parcelas);
+
+    const valorParcelasBRL = new Intl.NumberFormat("pt-BR", {
+      style: "currency",
+      currency: "BRL",
+    }).format(valorParcelas);
+
+    doc.text(`ou ${formData.parcelas}x de ${valorParcelasBRL} no cartão.`, 72, 234);
+
+
+    doc.setFontSize(12);
     if (signatureData) {
-      doc.text("Assinatura:", 20, 240);
-      doc.addImage(signatureData, "PNG", 20, 250, 170, 50); // Assinatura no PDF
+      doc.text("P&F Dedetizadora", 140, 250);
+      doc.addImage(signatureData, "PNG", 140, 250, 60, 20);
     }
 
-    // Baixar o PDF
-    doc.save("PF_Proposta.pdf");
+    const dataEmissao = new Date().toLocaleDateString();
+    doc.text(`Data de emissão: ${dataEmissao}`, 77, 288);
+
+    const estabelecimentoNome = formData.estabelecimento
+      ? formData.estabelecimento.replace(/\s+/g, "_") 
+      : "Proposta";
+
+    doc.save(`${estabelecimentoNome}_Proposta.pdf`);
   };
 
   const clearSignature = () => {
     signatureCanvasRef.current.clear();
-    setSignatureData(""); // Limpar assinatura salva
+    setSignatureData("");
   };
 
   const saveSignature = () => {
     const signature = signatureCanvasRef.current.toDataURL();
-    setSignatureData(signature); // Salvar assinatura
-    setIsModalOpen(false); // Fechar o modal
+    setSignatureData(signature);
+    setIsModalOpen(false);
   };
 
   return (
     <div style={styles.container}>
-      <Header title="P&F Proposta" />
+      <Header title="3 Irmãos Proposta" />
       <div style={styles.containerInput}>
         <input
           style={styles.input}
