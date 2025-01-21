@@ -290,6 +290,7 @@ const styles = {
     alignItems: "center",
     justifyContent: "center",
     marginTop: "1.8em",
+    marginBottom: "1em",
     width: "100%",
     marginLeft: "0px",
   },

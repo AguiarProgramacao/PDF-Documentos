@@ -150,7 +150,7 @@ const styles = {
   container: {
     display: "flex",
     flexDirection: "column",
-    height: "100vh",
+    minHeight: "100vh",
     backgroundColor: "#161F30",
     paddingInline: "1.1em"
   },
@@ -180,6 +180,7 @@ const styles = {
     alignItems: "center",
     justifyContent: "center",
     marginTop: "1.5em",
+    marginBottom: "1em",
     width: "100%",
     marginLeft: "0px"
   },
