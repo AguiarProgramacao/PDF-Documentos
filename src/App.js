@@ -5,6 +5,7 @@ import TresGarantia from "./pages/TresGarantiaPage";
 import PFGarantia from "./pages/PFGarantiaPage";
 import PFProposta from "./pages/PFPropostaPage";
 import TresProposta from "./pages/TresPropostaPage";
+import ImuniGarantia from "./pages/ImuniGarantia";
 
 function App() {
   return (
@@ -15,6 +16,7 @@ function App() {
         <Route path="/pf-garantia" element={<PFGarantia />} />
         <Route path="/pf-proposta" element={<PFProposta />} />
         <Route path="/tres-proposta" element={<TresProposta />} />
+        <Route path="/imuni-garantia" element={<ImuniGarantia />} />
       </Routes>
     </Router>
   );

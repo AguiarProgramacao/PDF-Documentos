@@ -42,7 +42,7 @@ export default function HomePage() {
       color: "#FFF",
     },
     imuni: {
-      backgroundColor: "#3D3D3D",
+      backgroundColor: "#008000",
       color: "#FFF",
     },
   };
@@ -50,7 +50,7 @@ export default function HomePage() {
   return (
     <div style={styles.container}>
       <p style={styles.title}>
-        Olá, chefe!!
+        Olá, Chefe!!
         <br />
         Qual vai ser o documente de hoje?
       </p>
@@ -67,7 +67,7 @@ export default function HomePage() {
         <button style={{ ...styles.button, ...styles.pf }} onClick={() => navigate("/pf-proposta")}>
           P&F Proposta
         </button>
-        <button style={{ ...styles.button, ...styles.imuni }}>
+        <button style={{ ...styles.button, ...styles.imuni }} onClick={() => navigate("imuni-garantia")}>
           ImuniGávea Garantia
         </button>
       </div>
