@@ -37,7 +37,7 @@ export default function ImuniGarantia() {
     const estabelecimento = inputs[0].value;
 
     
-    const data = inputs[7].value;
+    const data = inputs[6].value;
     const partes = data.split("-");
     const dataFormatada = `${partes[2]}/${partes[1]}/${partes[0]}`;
     
@@ -48,19 +48,6 @@ export default function ImuniGarantia() {
     doc.setFont("helvetica", "normal");
     doc.setFontSize(18);
     doc.text(`${inputs[5].value}`, 700, 236);
-    
-    doc.setFont("helvetica", "normal");
-    doc.setFontSize(18);
-    const valor = parseFloat(inputs[6].value);
-    if (!isNaN(valor)) {
-      const valorFormatado = new Intl.NumberFormat("pt-BR", {
-        style: "currency",
-        currency: "BRL",
-      }).format(valor);
-      doc.text(valorFormatado, 700, 255);
-    } else {
-      doc.text("Valor inválido", 700, 255);
-    }
 
     doc.setFont("helvetica", "normal");
     doc.setFontSize(18);
@@ -99,7 +86,6 @@ export default function ImuniGarantia() {
         <input className="input" style={styles.input} type="text" placeholder="Serviço" />
         <input className="input" style={styles.input} type="text" placeholder="Descrição do Serviço" />
         <input className="input" style={styles.input} type="text" placeholder="Tempo de Garantia" />
-        <input className="input" style={styles.input} type="text" placeholder="Valor" />
         <input className="input" style={styles.input} type="date" placeholder="Data do Serviço" />
       </div>
 
