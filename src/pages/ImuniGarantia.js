@@ -37,17 +37,13 @@ export default function ImuniGarantia() {
     const estabelecimento = inputs[0].value;
 
     
-    const data = inputs[6].value;
+    const data = inputs[5].value;
     const partes = data.split("-");
     const dataFormatada = `${partes[2]}/${partes[1]}/${partes[0]}`;
     
     doc.setFont("helvetica", "normal");
     doc.setFontSize(18);
-    doc.text(`${dataFormatada}`, 700, 217);
-    
-    doc.setFont("helvetica", "normal");
-    doc.setFontSize(18);
-    doc.text(`${inputs[5].value}`, 700, 236);
+    doc.text(`${dataFormatada}`, 686, 225);
 
     doc.setFont("helvetica", "normal");
     doc.setFontSize(18);
@@ -85,7 +81,6 @@ export default function ImuniGarantia() {
         <input className="input" style={styles.input} type="text" placeholder="CPF/CNPJ" />
         <input className="input" style={styles.input} type="text" placeholder="Serviço" />
         <input className="input" style={styles.input} type="text" placeholder="Descrição do Serviço" />
-        <input className="input" style={styles.input} type="text" placeholder="Tempo de Garantia" />
         <input className="input" style={styles.input} type="date" placeholder="Data do Serviço" />
       </div>
 
